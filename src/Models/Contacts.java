@@ -22,7 +22,10 @@ public class Contacts<date> {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if(!firstName.isEmpty())
+            this.firstName = firstName;
+        else
+            throw new IllegalArgumentException("First Name can't be empty!!!");
     }
 
     public String getLastName() {
@@ -30,7 +33,10 @@ public class Contacts<date> {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if(!lastName.isEmpty())
+            this.lastName = lastName;
+        else
+            throw new IllegalArgumentException("Last name can't be empty!!!");
     }
 
     public String getAddress() {
@@ -38,7 +44,10 @@ public class Contacts<date> {
     }
 
     public void setAddress(String address) {
-        Address = address;
+        if(!address.isEmpty())
+            Address = address;
+        else
+            throw new IllegalArgumentException("Address can't be empty");
     }
 
     public date getDateOfBirth() {

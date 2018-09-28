@@ -2,13 +2,16 @@ package Models;
 
 import javafx.scene.image.Image;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class Contacts<date> {
     private String firstName, lastName, Address;
-    private date dateOfBirth;
-    private double phone;
+    private LocalDate dateOfBirth;
+    private String phone;
     private Image image;
 
-    public Contacts(String firstName, String lastName, String address, date dateOfBirth, double phone, Image image) {
+    public Contacts(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, Image image) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
@@ -50,20 +53,28 @@ public class Contacts<date> {
             throw new IllegalArgumentException("Address can't be empty");
     }
 
-    public date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(LocalDate dateOfBirth){
+        int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        //This code is to validate if age is between 10-100//
+        if(age >= 10 && age<=100)
+            this.dateOfBirth = dateOfBirth;
+        else
+            throw new IllegalArgumentException("Age must between 10-100");
     }
 
-    public double getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(double phone) {
-        this.phone = phone;
+    public void setPhone(String phone) {
+        if(phone.matches("[2-9]\\d{2} [-.]?\\d{3} [-.]\\d{4}"))//this validated hone number//
+            this.phone = phone;
+        else
+            throw new IllegalArgumentException("Phone number must be in pattern of XXX-XXX-XXXX");
     }
 
     public Image getImage() {

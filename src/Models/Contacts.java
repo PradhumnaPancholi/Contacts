@@ -2,21 +2,30 @@ package Models;
 
 import javafx.scene.image.Image;
 
+
+import java.io.File;
+import java.nio.file.Path;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
 
 public class Contacts<date> {
-    private String firstName, lastName, Address;
+    private String firstName, lastName, address;
     private LocalDate dateOfBirth;
     private String phone;
-    private Image image;
+    private File image;
 
-    public Contacts(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, Image image) {
+    public Contacts(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone) {
         setFirstName(firstName);
         setLastName(lastName);
         setAddress(address);
         setDateOfBirth(dateOfBirth);
         setPhone(phone);
+        setImage(new File("./src/img/default.png"));
+    }
+
+    public Contacts(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, File image) {
+        this( firstName, lastName, address, dateOfBirth, phone);
         setImage(image);
     }
 
@@ -43,12 +52,12 @@ public class Contacts<date> {
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
         if(!address.isEmpty())
-            Address = address;
+            address = address;
         else
             throw new IllegalArgumentException("Address can't be empty");
     }
@@ -77,13 +86,64 @@ public class Contacts<date> {
             throw new IllegalArgumentException("Phone number must be in pattern of XXX-XXX-XXXX");
     }
 
-    public Image getImage() {
+    public File getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(File image) {
         this.image = image;
     }
+
+
+    //this method will write instance of contact into database//
+    public void insertIntoDB(Object statement) throws SQLException
+    {
+        Connection conn = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            //1. Connect to database//
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/contact","root", "");
+
+            //2. Create a string to hold query for user input//
+            String sql = "INSERT INTO contacts (firstName, lastName, address, dateOfBirth, phone, image)"
+                          + "Values(?,?,?,?,?,?)";
+
+            //3. Prepare the query//
+            preparedStatement = conn.prepareStatement(sql);
+
+            //4. Convert the birthday into a sql date//
+            Date dob = Date.valueOf(dateOfBirth);
+
+            //5 Bind Values to the pararmeter//
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, address);
+            preparedStatement.setDate(4, dob);
+            preparedStatement.setString(5, phone);
+            preparedStatement.setString(6, image.getName());
+
+            preparedStatement.executeUpdate();
+
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+        finally
+        {
+            if(preparedStatement != null)
+                preparedStatement.close();
+
+            if(conn != null)
+                conn.close();
+
+        }
+
+    }
+
 }
+
 
 

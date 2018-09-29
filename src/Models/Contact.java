@@ -1,31 +1,27 @@
 package Models;
 
-import javafx.scene.image.Image;
-
 
 import java.io.File;
-import java.nio.file.Path;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Contacts<date> {
-    private String firstName, lastName, address;
+public class Contact{
+    private String firstName, lastName, address, phone;
     private LocalDate dateOfBirth;
-    private String phone;
     private File image;
 
-    public Contacts(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone) {
+    public Contact(String name, String lastName, String address, LocalDate dateOfBirth, String firstName) {
         setFirstName(firstName);
-        setLastName(lastName);
-        setAddress(address);
-        setDateOfBirth(dateOfBirth);
+        setLastName(this.lastName);
+        setAddress(this.address);
+        setDateOfBirth(this.dateOfBirth);
         setPhone(phone);
         setImage(new File("./src/img/default.png"));
     }
 
-    public Contacts(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, File image) {
-        this( firstName, lastName, address, dateOfBirth, phone);
+    public Contact(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, File image) {
+        this(firstName, lastName, address, dateOfBirth, phone);
         setImage(image);
     }
 
@@ -96,7 +92,7 @@ public class Contacts<date> {
 
 
     //this method will write instance of contact into database//
-    public void insertIntoDB(Object statement) throws SQLException
+    public void insertIntoDB() throws SQLException
     {
         Connection conn = null;
         PreparedStatement preparedStatement = null;

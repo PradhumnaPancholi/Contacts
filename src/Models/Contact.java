@@ -2,25 +2,31 @@ package Models;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
+
 
 public class Contact{
     private String firstName, lastName, address, phone;
     private LocalDate dateOfBirth;
     private File image;
 
-    public Contact(String name, String lastName, String address, LocalDate dateOfBirth, String firstName) {
+    public Contact(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone) throws NoSuchAlgorithmException
+    {
         setFirstName(firstName);
-        setLastName(this.lastName);
-        setAddress(this.address);
-        setDateOfBirth(this.dateOfBirth);
+        setLastName(lastName);
+        setAddress(address);
+        setDateOfBirth(dateOfBirth);
         setPhone(phone);
         setImage(new File("./src/img/default.png"));
     }
 
-    public Contact(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, File image) {
+    public Contact(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone, File image) throws IOException, NoSuchAlgorithmException
+    {
         this(firstName, lastName, address, dateOfBirth, phone);
         setImage(image);
     }
@@ -90,6 +96,12 @@ public class Contact{
         this.image = image;
     }
 
+    // This method will return a formatted String with the persons' first name, last name and age//
+    public String toString()
+    {
+        return String.format("%s %s %s %d %s", firstName, lastName, address, Period.between(dateOfBirth,LocalDate.now()).getYears(), phone);
+    }
+
 
     //this method will write instance of contact into database//
     public void insertIntoDB() throws SQLException
@@ -110,7 +122,7 @@ public class Contact{
             preparedStatement = conn.prepareStatement(sql);
 
             //4. Convert the birthday into a sql date//
-            Date dob = Date.valueOf(dateOfBirth);
+            Date dob = java.sql.Date.valueOf(dateOfBirth);
 
             //5 Bind Values to the pararmeter//
             preparedStatement.setString(1, firstName);

@@ -3,8 +3,11 @@ package Controllers;
 import Models.Contact;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+
 
 public class CreateContact {
 
@@ -36,18 +39,19 @@ public class CreateContact {
     private Button cancelButton;
 
     //this method will try to fetch data from GUI, run validation and save it into database//
-    public void saveButtonPushed(ActionEvent event) {
+    public void saveButtonPushed(javafx.event.ActionEvent actionEvent)
+    {
 
-        try
-        {
-            Contact contact = new Contact(firstNameTextField.getText());
-
+        try {
+            Contact contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
+            output.setText("");
             contact.insertIntoDB();
-        }
-        catch (Exception e)
-        {
+        } catch (NoSuchAlgorithmException e) {
+            output.setText(e.getMessage());
+        } catch (SQLException e) {
             output.setText(e.getMessage());
         }
     }
 }
+
 

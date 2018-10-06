@@ -36,7 +36,7 @@
       </VBox>
       <Button fx:id="saveButton" layoutX="504.0" layoutY="447.0" mnemonicParsing="false" onAction="#saveButtonPushed" text="Save" />
       <Button fx:id="cancelButton" layoutX="553.0" layoutY="447.0" mnemonicParsing="false" text="Never Mind" wrapText="true" />
-      <ImageView fitHeight="207.0" fitWidth="200.0" layoutX="28.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageView" fitHeight="207.0" fitWidth="200.0" layoutX="28.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="chooseImageButton" layoutX="82.0" layoutY="363.0" mnemonicParsing="false" text="Choose Image" />
       <Label fx:id="output" layoutX="252.0" layoutY="490.0" prefHeight="25.0" prefWidth="312.0" />
    </children>

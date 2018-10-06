@@ -15,7 +15,7 @@ public class Contact{
     private LocalDate dateOfBirth;
     private File image;
 
-    public Contact(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone) throws NoSuchAlgorithmException
+    public Contact(String firstName, String lastName, String address, LocalDate dateOfBirth, String phone)
     {
         setFirstName(firstName);
         setLastName(lastName);
@@ -59,9 +59,9 @@ public class Contact{
 
     public void setAddress(String address) {
         if(!address.isEmpty())
-            address = address;
+            this.address = address;
         else
-            throw new IllegalArgumentException("Address can't be empty");
+            throw new IllegalArgumentException("Address can't be empty!!!");
     }
 
     public LocalDate getDateOfBirth() {
@@ -82,7 +82,7 @@ public class Contact{
     }
 
     public void setPhone(String phone) {
-        if(phone.matches("[2-9]\\d{2} [-.]?\\d{3} [-.]\\d{4}"))//this validated hone number//
+        if(phone.matches("[2-9]\\d{2}[-.]?\\d{3}[-.]\\d{4}"))//this validates phone number//
             this.phone = phone;
         else
             throw new IllegalArgumentException("Phone number must be in pattern of XXX-XXX-XXXX");

@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 
@@ -46,10 +45,9 @@ public class CreateContact {
             Contact contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
             output.setText("");
             contact.insertIntoDB();
-        } catch (NoSuchAlgorithmException e) {
-            output.setText(e.getMessage());
         } catch (SQLException e) {
             output.setText(e.getMessage());
+
         }
     }
 }

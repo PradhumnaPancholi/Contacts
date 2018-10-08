@@ -73,23 +73,29 @@ public class CreateContact implements Initializable {
         //adding filters to fileChooser//
         fileChooser.getExtensionFilters().addAll(jpgFilter, pngFilter);
 
-        //put image file in instance variable //
-        image = fileChooser.showOpenDialog(stage);
+        //to put opened file in instance variable image //
+        File tmpImageFile = fileChooser.showOpenDialog(stage);
 
-        //update image in imageView//
-        if(image.isFile())
-        {
-            try
+        //validation to avoid null input//
+        if (tmpImageFile != null){
+            image = tmpImageFile;
+
+            //update image in imageView//
+            if(image.isFile())
             {
-                BufferedImage bufferedImage = ImageIO.read(image);
-                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-                imageView.setImage(image);
-            }
-            catch (IOException e)
-            {
-                System.err.println(e.getMessage());
+                try
+                {
+                    BufferedImage bufferedImage = ImageIO.read(image);
+                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                    imageView.setImage(image);
+                }
+                catch (IOException e)
+                {
+                    System.err.println(e.getMessage());
+                }
             }
         }
+
     }
 
     //this method will try to fetch data from GUI, run validation and save it into database//

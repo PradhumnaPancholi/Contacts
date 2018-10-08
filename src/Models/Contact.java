@@ -3,8 +3,14 @@ package Models;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 
+import java.security.SecureRandom;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -29,6 +35,7 @@ public class Contact{
     {
         this(firstName, lastName, address, dateOfBirth, phone);
         setImage(image);
+        copyImage();
     }
 
     public String getFirstName() {
@@ -94,6 +101,83 @@ public class Contact{
 
     public void setImage(File image) {
         this.image = image;
+    }
+
+    //this method will copy image file to server with unique name//
+    public void copyImage() throws IOException {
+        //path to copy image to local directory//
+        Path sourcePath = image.toPath();
+        //for unique name//
+        String uniqueFileName = getUniqueFileName(image.getName());
+
+        Path targetPath = Paths.get("./src/images/"+uniqueFileName);
+        //copy files to new directory//
+        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        //update image file to point  to new File//
+        image = new File(targetPath.toString());
+        }
+
+    //this method will receive a file name and return it with some random prefix//
+    public String getUniqueFileName(String oldFileName)
+    {
+        String newName;
+
+        //random number generator//
+        SecureRandom rng = new SecureRandom();
+
+        do
+        {
+            newName = "";
+
+            //generate 32 random characters//
+            for (int count=1; count <= 32; count++)
+            {
+                int nextChar;
+
+                do
+                {
+                    nextChar = rng.nextInt(123);
+                }while (!validCharacterValue(nextChar));
+
+                newName = String.format("%s%c",newName, nextChar);
+            }
+            newName += oldFileName;
+        }while (!uniqueFileInDirectory(newName));
+
+        return newName;
+    }
+
+    //this method will check if file name is unique//
+    public boolean uniqueFileInDirectory (String fileName)
+    {
+        File directory = new File("./src/images/");
+
+        File[] dir_contents = directory.listFiles();
+
+        for (File file: dir_contents)
+        {
+            if (file.getName().equals(fileName))
+                return false;
+        }
+        return true;
+    }
+
+    //this method will help in validating random generated number//
+    public  boolean validCharacterValue(int asciiValue)
+    {
+        //0-9 ascii range is from 48-57
+        if (asciiValue >= 48 && asciiValue <= 57)
+            return true;
+
+        //A-Z ascii range is from 65-90
+        if (asciiValue >= 65 && asciiValue <= 90)
+            return true;
+
+        //a-z ascii range is from 97-122
+        if (asciiValue >= 97 && asciiValue <= 122)
+            return true;
+        else
+            return false;
     }
 
     // This method will return a formatted String with the persons' first name, last name and age//

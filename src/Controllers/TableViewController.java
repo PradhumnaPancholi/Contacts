@@ -1,8 +1,10 @@
 package Controllers;
 
 import Models.Contact;
+import Views.SceneChanger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -11,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -26,6 +29,12 @@ public class TableViewController implements Initializable {
     @FXML private TableColumn<Contact, String>phoneColumn;
     @FXML private TableColumn<Contact, String>imageColumn;
 
+
+    //this method with switch scene: Contact Form//
+    public void addNewContactButtonPushed(ActionEvent event) throws IOException {
+        SceneChanger sc = new SceneChanger();
+        sc.changeScene(event,"ContactForm.fxml", "Add new Contact");
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {

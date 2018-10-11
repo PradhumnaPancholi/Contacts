@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Contact;
+import Views.SceneChanger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,11 +57,17 @@ public class CreateContact implements Initializable {
 
     private File image;
 
+    //Cancel button functionality--> this method will change scene back to Contact Table (button is label never mind on GUI)//
+    public void cancelButtonPushed(javafx.event.ActionEvent event) throws IOException {
+        SceneChanger sc = new SceneChanger();
+        sc.changeScene(event, "ContactTable.fxml", "All Contacts" );
+    }
+
     //for choose image functionality//
-    public void chooseImageButtonPushed(javafx.event.ActionEvent actionEvent)
+    public void chooseImageButtonPushed(javafx.event.ActionEvent event)
     {
         //stage to open a new windows//
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         //instantiating file chooser object//
         FileChooser fileChooser = new FileChooser();
@@ -99,13 +106,14 @@ public class CreateContact implements Initializable {
     }
 
     //this method will try to fetch data from GUI, run validation and save it into database//
-    public void saveButtonPushed(javafx.event.ActionEvent actionEvent)
-    {
+    public void saveButtonPushed(javafx.event.ActionEvent event) throws IOException {
 
         try {
             Contact contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
             output.setText("");
             contact.insertIntoDB();
+            SceneChanger sc = new SceneChanger();
+            sc.changeScene(event, "ContactTable.fxml", "All Contacts");
         } catch (SQLException e) {
             output.setText(e.getMessage());
 

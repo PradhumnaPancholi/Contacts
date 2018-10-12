@@ -19,7 +19,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
@@ -44,18 +46,11 @@ public class CreateContact implements Initializable {
     private ImageView imageView;
 
     @FXML
-    private Button chooseImageButton;
-
-    @FXML
-    private Button saveButton;
-
-    @FXML
     private Label output;
 
-    @FXML
-    private Button cancelButton;
-
     private File image;
+
+    private boolean imageChanged;
 
     //Cancel button functionality--> this method will change scene back to Contact Table (button is label never mind on GUI)//
     public void cancelButtonPushed(javafx.event.ActionEvent event) throws IOException {
@@ -85,6 +80,7 @@ public class CreateContact implements Initializable {
 
         //validation to avoid null input//
         if (tmpImageFile != null){
+
             image = tmpImageFile;
 
             //update image in imageView//
@@ -95,6 +91,7 @@ public class CreateContact implements Initializable {
                     BufferedImage bufferedImage = ImageIO.read(image);
                     Image image = SwingFXUtils.toFXImage(bufferedImage, null);
                     imageView.setImage(image);
+                    imageChanged = true;
                 }
                 catch (IOException e)
                 {
@@ -106,22 +103,37 @@ public class CreateContact implements Initializable {
     }
 
     //this method will try to fetch data from GUI, run validation and save it into database//
-    public void saveButtonPushed(javafx.event.ActionEvent event) throws IOException {
+    public void saveButtonPushed(javafx.event.ActionEvent event) throws IOException, NoSuchAlgorithmException {
 
-        try {
-            Contact contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
+        try
+        {
+            Contact contact;
+            if (imageChanged)
+            {
+                contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText(), image);
+            }
+            else
+            {
+                contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
+            }
             output.setText("");
             contact.insertIntoDB();
             SceneChanger sc = new SceneChanger();
             sc.changeScene(event, "ContactTable.fxml", "All Contacts");
-        } catch (SQLException e) {
-            output.setText(e.getMessage());
+        }
 
+        catch (SQLException e)
+        {
+            output.setText(e.getMessage());
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //to set a default year / minimum age for dob//
+        dateOfBirthDatePicker.setValue(LocalDate.now().minusYears(10));
+        //to check if custom image is selected//
+        imageChanged = false;//initial value is false //
         //to load default image//
         try{
             image = new File("./src/img/default.png");

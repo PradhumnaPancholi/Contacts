@@ -14,6 +14,7 @@ import java.security.SecureRandom;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 
 public class Contact{
@@ -104,7 +105,8 @@ public class Contact{
     }
 
     //this method will copy image file to server with unique name//
-    public void copyImage() throws IOException {
+    public void copyImage() throws IOException
+    {
         //path to copy image to local directory//
         Path sourcePath = image.toPath();
         //for unique name//
@@ -115,7 +117,7 @@ public class Contact{
         Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         //update image file to point  to new File//
         image = new File(targetPath.toString());
-        }
+    }
 
     //this method will receive a file name and return it with some random prefix//
     public String getUniqueFileName(String oldFileName)
@@ -147,21 +149,6 @@ public class Contact{
         return newName;
     }
 
-    //this method will check if file name is unique//
-    public boolean uniqueFileInDirectory (String fileName)
-    {
-        File directory = new File("./src/images/");
-
-        File[] dir_contents = directory.listFiles();
-
-        for (File file: dir_contents)
-        {
-            if (file.getName().equals(fileName))
-                return false;
-        }
-        return true;
-    }
-
     //this method will help in validating random generated number//
     public  boolean validCharacterValue(int asciiValue)
     {
@@ -176,8 +163,23 @@ public class Contact{
         //a-z ascii range is from 97-122
         if (asciiValue >= 97 && asciiValue <= 122)
             return true;
-        else
-            return false;
+
+        return false;
+    }
+
+    //this method will check if file name is unique//
+    public boolean uniqueFileInDirectory (String fileName)
+    {
+        File directory = new File("./src/images/");
+
+        File[] dir_contents = directory.listFiles();
+
+        for (File file: dir_contents)
+        {
+            if (file.getName().equals(fileName))
+                return false;
+        }
+        return true;
     }
 
     // This method will return a formatted String with the persons' first name, last name and age//

@@ -4,6 +4,7 @@ import Models.Contact;
 import Views.SceneChanger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.sql.ResultSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class TableViewController implements Initializable {
 
-    @FXML private TableView contactTable;
+    @FXML private TableView <Contact>contactTable;
     @FXML private TableColumn<Contact, String>firstNameColumn;
     @FXML private TableColumn<Contact, String>lastNameColumn;
     @FXML private TableColumn<Contact, String>addressColumn;
@@ -75,7 +76,11 @@ public class TableViewController implements Initializable {
             //4 create contact object from each record//
             while (resultSet.next())
             {
-                Contact newContact  = new Contact(resultSet.getString("firstName"), resultSet.getString("lastName"), resultSet.getString("address"), resultSet.getDate("dateOfBirth").toLocalDate(), resultSet.getString("phone"));
+                Contact newContact  = new Contact(resultSet.getString("firstName"),
+                                                  resultSet.getString("lastName"),
+                                                  resultSet.getString("address"),
+                                                  resultSet.getDate("dateOfBirth").toLocalDate(),
+                                                  resultSet.getString("phone"));
                 newContact.setImage(new File(resultSet.getString("image")));
                 contacts.add(newContact);
             }

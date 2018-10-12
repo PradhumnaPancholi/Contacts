@@ -112,7 +112,7 @@ public class Contact{
         //for unique name//
         String uniqueFileName = getUniqueFileName(image.getName());
 
-        Path targetPath = Paths.get("./src/images/"+uniqueFileName);
+        Path targetPath = Paths.get("./src/img/"+uniqueFileName);
         //copy files to new directory//
         Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         //update image file to point  to new File//
@@ -170,7 +170,7 @@ public class Contact{
     //this method will check if file name is unique//
     public boolean uniqueFileInDirectory (String fileName)
     {
-        File directory = new File("./src/images/");
+        File directory = new File("./src/img/");
 
         File[] dir_contents = directory.listFiles();
 

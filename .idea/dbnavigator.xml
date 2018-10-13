@@ -23,7 +23,13 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="41ae3ca1-ee00-46a8-b143-3b870d074f99">
+        <schema name="ap" object-types="function, procedure, table, view" />
+        <schema name="contact" object-types="function, procedure, table, view" />
+        <schema name="mysql" object-types="function, procedure, table, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="41ae3ca1-ee00-46a8-b143-3b870d074f99">

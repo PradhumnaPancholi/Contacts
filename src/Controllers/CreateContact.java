@@ -105,27 +105,48 @@ public class CreateContact implements Initializable {
     //this method will try to fetch data from GUI, run validation and save it into database//
     public void saveButtonPushed(javafx.event.ActionEvent event) throws IOException, NoSuchAlgorithmException {
 
-        try
+        if (this.firstNameTextField.getText().isEmpty())
         {
-            Contact contact;
-            if (imageChanged)
+            output.setText("First name can't be empty");
+        }
+        else if (this.lastNameTextField.getText().isEmpty())
+        {
+            output.setText("Last name can't be empty");
+        }
+        else if (this.addressTextField.getText().isEmpty())
+        {
+            output.setText("Address can't be empty");
+        }
+        else if (this.phoneTextField.getText().isEmpty())
+        {
+            output.setText("Phone number can't be empty");
+        }
+        else
+        {
+            try
             {
-                contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText(), image);
+                Contact contact;
+                if (imageChanged)
+                {
+                    contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText(), image);
+                }
+                else
+                {
+                    contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
+                }
+                output.setText("");
+                contact.insertIntoDB();
+                SceneChanger sc = new SceneChanger();
+                sc.changeScene(event, "ContactTable.fxml", "All Contacts");
             }
-            else
+
+            catch (SQLException e)
             {
-                contact = new Contact(firstNameTextField.getText(), lastNameTextField.getText(), addressTextField.getText(), dateOfBirthDatePicker.getValue(), phoneTextField.getText());
+                output.setText(e.getMessage());
             }
-            output.setText("");
-            contact.insertIntoDB();
-            SceneChanger sc = new SceneChanger();
-            sc.changeScene(event, "ContactTable.fxml", "All Contacts");
+
         }
 
-        catch (SQLException e)
-        {
-            output.setText(e.getMessage());
-        }
     }
 
     @Override

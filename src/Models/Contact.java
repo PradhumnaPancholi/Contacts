@@ -198,7 +198,7 @@ public class Contact{
         try
         {
             //1. Connect to database//
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/contact","root", "");
+            conn = DriverManager.getConnection("jdbc:sqlserver://assign01.database.windows.net:1433;database=contact;user=pradhumna@assign01;password=assign6629#;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
 
             //2. Create a string to hold query for user input//
             String sql = "INSERT INTO contacts (firstName, lastName, address, dateOfBirth, phone, image)"

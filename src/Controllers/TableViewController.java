@@ -65,7 +65,7 @@ public class TableViewController implements Initializable {
         ResultSet resultSet = null;
         try{
             //1 connection with DB//
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/contact","root", "");
+            conn = DriverManager.getConnection("jdbc:sqlserver://assign01.database.windows.net:1433;database=contact;user=pradhumna@assign01;password=assign6629#;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
 
             //2 create a statement object//
             statement = conn.createStatement();
